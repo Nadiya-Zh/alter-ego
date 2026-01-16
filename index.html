@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Альтер-Его: Повна Колекція</title>
+    <style>
+        :root {
+            --bg: #0f0f1b;
+            --card-bg: #16213e;
+            --accent: #e94560;
+            --text: #ffffff;
+            --success: #55efc4;
+            --warning: #f1c40f;
+            --hot: #ff006e;
+            --history: #d35400;
+            --profi: #3498db;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px;
+            margin: 0;
+            min-height: 100vh;
+            transition: background 0.5s ease;
+        }
+
+        h2 { text-transform: uppercase; letter-spacing: 2px; margin-top: 5px; text-align: center; margin-bottom: 15px;}
+
+        /* Навігація режимів */
+        .mode-wrapper {
+            width: 100%;
+            max-width: 500px;
+            margin-bottom: 15px;
+        }
+        
+        .mode-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .mode-btn {
+            flex: 1 1 30%; /* Щоб кнопки гарно ставали в ряд */
+            padding: 10px 5px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: var(--card-bg);
+            color: rgba(255,255,255,0.7);
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: bold;
+            transition: 0.3s;
+            white-space: nowrap;
+        }
+
+        .mode-btn.active {
+            color: white;
+            transform: scale(1.05);
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            border: none;
+        }
+        
+        /* Стилі активних кнопок */
+        .active[data-mode="common"] { background: var(--success); color: #000; }
+        .active[data-mode="politics"] { background: var(--warning); color: #000; }
+        .active[data-mode="history"] { background: var(--history); }
+        .active[data-mode="profi"] { background: var(--profi); }
+        .active[data-mode="hot"] { background: var(--hot); }
+
+        /* Налаштування */
+        .settings-bar {
+            background: rgba(255,255,255,0.05);
+            padding: 10px 15px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 500px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            box-sizing: border-box;
+        }
+        .toggle-group { display: flex; gap: 15px; }
+        .checkbox-label { display: flex; align-items: center; gap: 5px; cursor: pointer; }
+        input[type="checkbox"] { accent-color: var(--accent); transform: scale(1.2); }
+
+        /* Сітка карток */
+        .game-container {
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 15px;
+            border-radius: 12px;
+            border-left: 5px solid var(--accent);
+            animation: fadeIn 0.5s;
+        }
+
+        .card.hidden { display: none; }
+        .label { font-size: 0.7rem; opacity: 0.6; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+        .content { font-size: 1.1rem; font-weight: 600; line-height: 1.4; }
+        
+        /* Підказка */
+        .hint-box {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            padding: 10px;
+            border-radius: 8px;
+            font-style: italic;
+            font-size: 0.9rem;
+            margin-top: 8px;
+            display: none;
+            border: 1px dashed rgba(255,255,255,0.3);
+        }
+
+        /* Таймер і кнопки */
+        .action-zone {
+            margin-top: 25px;
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        #timerDisplay { font-size: 3.5rem; font-weight: 800; margin: 10px 0; line-height: 1; color: white; }
+        #timerLabel { font-size: 0.9rem; color: var(--success); min-height: 20px; }
+
+        .btn-main {
+            width: 100%;
+            padding: 18px;
+            border-radius: 12px;
+            border: none;
+            background: var(--accent);
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(233, 69, 96, 0.4);
+            transition: transform 0.2s;
+        }
+        .btn-main:active { transform: scale(0.98); }
+        .btn-ready { background: var(--success); color: #0f0f1b; box-shadow: 0 4px 15px rgba(85, 239, 196, 0.4); }
+
+        /* Голосування */
+        .vote-panel { display: none; gap: 10px; margin-top: 15px; }
+        .vote-btn { flex: 1; padding: 15px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; color: white; font-size: 1rem; }
+        .vote-win { background: #27ae60; }
+        .vote-fail { background: #c0392b; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+    <h2>🎭 АЛЬТЕР-ЕГО</h2>
+
+    <div class="mode-wrapper">
+        <div class="mode-selector">
+            <button class="mode-btn active" data-mode="common" onclick="switchMode('common')">🏠 КЛАСИКА</button>
+            <button class="mode-btn" data-mode="politics" onclick="switchMode('politics')">🏛️ ПОЛІТИКА</button>
+            <button class="mode-btn" data-mode="history" onclick="switchMode('history')">📜 ІСТОРІЯ</button>
+            <button class="mode-btn" data-mode="profi" onclick="switchMode('profi')">💼 ПРОФІ</button>
+            <button class="mode-btn" data-mode="hot" onclick="checkAge()"> В розробці</button>
+        </div>
+    </div>
+
+    <div class="settings-bar" id="settingsBar">
+        <span style="opacity: 0.7;">Налаштування:</span>
+        <div class="toggle-group">
+            <label class="checkbox-label"><input type="checkbox" id="useLoc" checked> Локація</label>
+            <label class="checkbox-label"><input type="checkbox" id="useTrb" checked> Трабл</label>
+        </div>
+    </div>
+
+    <div class="game-container">
+        <div id="cardLoc" class="card">
+            <div class="label">📍 Локація</div>
+            <div id="txtLoc" class="content">?</div>
+        </div>
+        <div id="cardSit" class="card">
+            <div class="label">🧨 Ситуація</div>
+            <div id="txtSit" class="content">?</div>
+        </div>
+        <div id="cardRol" class="card" style="border-color: #fff;">
+            <div class="label">🎭 Твоя Роль</div>
+            <div id="txtRol" class="content">Натисніть "Генерувати"</div>
+            <div id="hintBox" class="hint-box"></div>
+        </div>
+        <div id="cardTrb" class="card">
+            <div class="label">🚫 Трабл (Обмеження)</div>
+            <div id="txtTrb" class="content">?</div>
+        </div>
+    </div>
+
+    <div class="action-zone">
+        <div id="timerLabel"></div>
+        <div id="timerDisplay">00</div>
+
+        <div id="votePanel" class="vote-panel">
+            <button class="vote-btn vote-win" onclick="vote('win')">👍 КРАСАВА (<span id="countWin">0</span>)</button>
+            <button class="vote-btn vote-fail" onclick="vote('fail')">👎 ЗРАДА (<span id="countFail">0</span>)</button>
+        </div>
+
+        <button id="btnGen" class="btn-main" onclick="generate()">🎲 ГЕНЕРУВАТИ</button>
+        <button id="btnStart" class="btn-main btn-ready" style="display:none;" onclick="startRound()">🚀 ПОГНАЛИ!</button>
+    </div>
+
+    <script>
+        // === БАЗА ДАНИХ (Всі 5 пакетів) ===
+       // === РОЗШИРЕНА БАЗА ДАНИХ ===
+        const db = {
+            common: {
+                locs: ["Черга в АТБ", "Маршрутка в час пік", "Батьківські збори", "Укриття", "Viber-чат будинку", "Черга до лікаря", "Ліфт з сусідами", "Ринок 'Троєщина'", "Салон краси (чоловічий зал)"],
+                sits: ["Зникло світло", "Кіт замовив 50кг корму", "Забув ім'я співрозмовника", "Розв'язався шнурок (руки зайняті)", "Переплутали з відомим блогером", "Вийшов з туалету, заправивши спідницю в колготи", "Вам намагаються вручити повістку (помилково)"],
+                rols: ["Буданов", "Пані з помідорами", "Пес Патрон", "Волонтер", "Баба Наташа (агент)", "Ухилянт", "Арестович", "Втомлена мама трьох дітей"],
+                trbs: ["Тільки на літеру 'П'", "Пінгвінячі лікті", "Тільки віршами", "Без літери 'О'", "Постійно стрибай", "Говори пошепки", "Смійся після кожного слова"],
+                hints: { 
+                    "Буданов": "Всьому свій час. І каві теж.", 
+                    "Пані з помідорами": "Я їх на зиму берегла!", 
+                    "Пес Патрон": "Де тут міна? А, це ковбаса.", 
+                    "Ухилянт": "Тссс... мене тут немає.",
+                    "Арестович": "Два-три тижні максимум."
+                }
+            },
+            politics: {
+                locs: ["Кулуари ВР", "Скляний міст Кличка", "Ефір у Мосейчук", "Бункер Президента", "Саміт НАТО", "Буковель (відпустка)", "Зал суду в Гаазі"],
+                sits: ["Проголосував за 'заборону повітря'", "Знайшли незадекларований завод", "Забув текст присяги", "Застукали в Таїланді", "Байден не потиснув руку", "Випадково оголосив війну Антарктиді"],
+                rols: ["Віталій Кличко", "Петро Гетьман", "Юля з косою", "Коля Тищенко", "Дональд Трамп", "Борис Джонсон (Джонсонюк)", "Лукашенко (Картопля)"],
+                trbs: ["Обіцяй всім по 1000 грн", "Тисни уявну кнопку", "Не кажи 'Так'/'Ні'", "Руки заблоковані (в кайданках)", "Кричи 'Ганьба!' кожну хвилину"],
+                hints: { 
+                    "Віталій Кличко": "Аби дивитися в завтрашній день...", 
+                    "Петро Гетьман": "Армія! Мова! Віра!", 
+                    "Коля Тищенко": "Де мої котлети?", 
+                    "Дональд Трамп": "Make everything great again!",
+                    "Борис Джонсон": "Добрий день, everybody!"
+                }
+            },
+            history: {
+                locs: ["Черга за шаурмою", "Запорізька Січ з Wi-Fi", "Кабінет історії", "Вагон Укрзалізниці", "Барбершоп", "Караоке-бар", "Ефір шоу 'Холостяк'", "Відділення Нової Пошти", "Комп'ютерний клуб"],
+                sits: ["Загубив булаву", "Спалив село (випадково)", "Не пускають в метро з конем", "Не сподобався портрет на 20 гривнях", "Забув слова гімну", "Звинуватили в плагіаті Конституції", "Намагаєшся розрахуватися срібниками"],
+                rols: ["Степан Бандера", "Княгиня Ольга", "Тарас Шевченко", "Богдан Хмельницький", "Іван Мазепа", "Козак-Характерник", "Григорій Сковорода", "Нестор Махно", "Леся Українка", "Микола Гоголь"],
+                trbs: ["Говори старослов'янською ('єси')", "Постійно крути вуса", "Рухайся як пам'ятник", "Цитуй 'Кобзаря' недоречно", "Не дивись в очі (ти кріпак)", "Філософствуй метафорами", "Закликай до повстання"],
+                hints: { 
+                    "Степан Бандера": "Батько наш... ну ви знаєте.", 
+                    "Княгиня Ольга": "Люблю голубів. Особливо 'hot'.", 
+                    "Тарас Шевченко": "Мені тринадцятий минало...", 
+                    "Козак-Характерник": "Зараз перетворюсь на вовка!",
+                    "Григорій Сковорода": "Світ ловив мене, але я втік.",
+                    "Нестор Махно": "Анархія — мать порядку!",
+                    "Леся Українка": "Щоб не плакать, я сміялась."
+                }
+            },
+            profi: {
+                locs: ["IT-офіс (Опенспейс)", "Шкільна їдальня", "Кабінет стоматолога", "Каса супермаркету", "Zoom-конференція", "Будівництво", "Манікюрний салон", "Склад інтернет-магазину", "Корпоратив у лісі"],
+                sits: ["Дедлайн був вчора", "Вилили каву на сервер", "Клієнт хоче 'погратися шрифтами'", "Забув вимкнути мікрофон", "Зарплата прийшла (але на 50% менше)", "Кур'єр привіз цемент замість піци", "Запостив мем на сторінку мера", "Згорів обід у мікрохвильовці"],
+                rols: ["Айтішник-інтроверт", "Вчителька зі стажем", "Таксист-філософ", "Головна Бухгалтерка", "HR-менеджер", "Лікар-травматолог", "Кур'єр Glovo", "SMM-менеджер", "Шкільна прибиральниця", "Ріелтор", "Манікюрниця"],
+                trbs: ["Поганий зв'язок (зависай)", "Тільки сленгом (асаймент, крінж)", "Удавай що друкуєш", "Фальшиво усміхайся (клієнт правий)", "Говори як втомлений", "Синдром самозванця (вибачайся)", "Продавай всім 'успішний успіх'"],
+                hints: { 
+                    "Айтішник-інтроверт": "Вимкни і увімкни.", 
+                    "Вчителька зі стажем": "Дзвінок для вчителя!", 
+                    "Таксист-філософ": "Я таксую для душі, у мене бізнес.", 
+                    "Головна Бухгалтерка": "Де оригінали?! Я тебе посаджу!",
+                    "Кур'єр Glovo": "Ваш суп розлився... Це соус!",
+                    "Шкільна прибиральниця": "Куди по помитому?!"
+                }
+            },
+
+                }
+            
+        ;
+
+        // === СТАН ГРИ ===
+        let currentMode = 'common';
+        let timerInterval;
+        let votes = { win: 0, fail: 0 };
+
+        // === ФУНКЦІЇ ===
+
+        function switchMode(mode) {
+            currentMode = mode;
+            
+            // Візуал кнопок
+            document.querySelectorAll('.mode-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if(btn.dataset.mode === mode) btn.classList.add('active');
+            });
+
+            // Зміна фону та кольорів
+            const body = document.body;
+            let themeColor = '#e94560'; // Default accent
+
+            if(mode === 'common') { body.style.background = "#0f0f1b"; themeColor = "#e94560"; }
+            else if(mode === 'politics') { body.style.background = "#1a1a0a"; themeColor = "#f1c40f"; }
+            else if(mode === 'history') { body.style.background = "#2c3e50"; themeColor = "#d35400"; }
+            else if(mode === 'profi') { body.style.background = "#182a3a"; themeColor = "#3498db"; }
+            else if(mode === 'hot') { body.style.background = "#1a050d"; themeColor = "#ff006e"; }
+
+            // Оновлюємо CSS змінну акценту динамічно для кнопок
+            document.documentElement.style.setProperty('--accent', themeColor);
+
+            resetGameUI();
+        }
+
+        function checkAge() {
+            if(confirm("⚠️ Увага! Цей режим містить контент 18+. \n\nВам виповнилося 18 років?")) {
+                switchMode('hot');
+            } else {
+                switchMode('common');
+            }
+        }
+
+        function generate() {
+            const useLoc = document.getElementById('useLoc').checked;
+            const useTrb = document.getElementById('useTrb').checked;
+            const data = db[currentMode];
+
+            const randRol = getRandom(data.rols);
+            
+            fillCard('cardLoc', 'txtLoc', useLoc ? getRandom(data.locs) : null);
+            fillCard('cardSit', 'txtSit', getRandom(data.sits));
+            fillCard('cardRol', 'txtRol', randRol);
+            fillCard('cardTrb', 'txtTrb', useTrb ? getRandom(data.trbs) : null);
+
+            // Підказка
+            const hint = data.hints[randRol];
+            const hintBox = document.getElementById('hintBox');
+            if(hint) {
+                hintBox.innerText = `💡 "${hint}"`;
+                hintBox.style.display = 'block';
+            } else {
+                hintBox.style.display = 'none';
+            }
+
+            // Інтерфейс
+            document.getElementById('settingsBar').style.display = 'none';
+            document.getElementById('btnGen').style.display = 'none';
+            document.getElementById('btnStart').style.display = 'block';
+            document.getElementById('timerDisplay').innerText = "10";
+            document.getElementById('timerLabel').innerText = "Час на підготовку";
+        }
+
+        function fillCard(cardId, textId, content) {
+            const card = document.getElementById(cardId);
+            if(content) {
+                document.getElementById(textId).innerText = content;
+                card.classList.remove('hidden');
+            } else {
+                card.classList.add('hidden');
+            }
+        }
+
+        function getRandom(arr) {
+            return arr[Math.floor(Math.random() * arr.length)];
+        }
+
+        function startRound() {
+            document.getElementById('btnStart').style.display = 'none';
+            let timeLeft = 10;
+            let phase = 'prep'; 
+
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimerUI(timeLeft);
+
+                if(timeLeft <= 0) {
+                    if(phase === 'prep') {
+                        phase = 'act';
+                        timeLeft = 60;
+                        document.getElementById('timerLabel').innerText = "🔥 В ЕФІРІ! ВИСТУПАЙ!";
+                        votes = { win: 0, fail: 0 };
+                        updateVotes();
+                        document.getElementById('votePanel').style.display = 'flex';
+                    } else {
+                        clearInterval(timerInterval);
+                        finishRound();
+                    }
+                }
+            }, 1000);
+        }
+
+        function updateTimerUI(time) {
+            document.getElementById('timerDisplay').innerText = time < 10 ? "0" + time : time;
+        }
+
+        function vote(type) {
+            votes[type]++;
+            updateVotes();
+        }
+
+        function updateVotes() {
+            document.getElementById('countWin').innerText = votes.win;
+            document.getElementById('countFail').innerText = votes.fail;
+        }
+
+        function finishRound() {
+            document.getElementById('timerLabel').innerText = "🏁 РАУНД ЗАВЕРШЕНО";
+            document.getElementById('timerDisplay').innerText = "FIN";
+            document.getElementById('votePanel').style.display = 'none';
+            
+            const btnGen = document.getElementById('btnGen');
+            btnGen.style.display = 'block';
+            btnGen.innerText = "🔄 НАСТУПНИЙ РАУНД";
+            document.getElementById('settingsBar').style.display = 'flex';
+        }
+
+        function resetGameUI() {
+            clearInterval(timerInterval);
+            document.getElementById('txtRol').innerText = "Натисніть 'Генерувати'";
+            document.getElementById('txtLoc').innerText = "?";
+            document.getElementById('txtSit').innerText = "?";
+            document.getElementById('txtTrb').innerText = "?";
+            document.getElementById('hintBox').style.display = 'none';
+            document.getElementById('votePanel').style.display = 'none';
+            document.getElementById('timerDisplay').innerText = "00";
+            document.getElementById('timerLabel').innerText = "";
+            document.getElementById('btnGen').innerText = "🎲 ГЕНЕРУВАТИ";
+            document.getElementById('btnGen').style.display = 'block';
+            document.getElementById('btnStart').style.display = 'none';
+            document.getElementById('settingsBar').style.display = 'flex';
+        }
+    </script>
+</body>
+</html>
