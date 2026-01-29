@@ -69,7 +69,25 @@
         .mode-btn[data-mode="folk"] { 
             border-color: #27ae60; 
             color: #27ae60;}
-        
+            /* Кнопка */
+.mode-btn[data-mode="kids"] { 
+    border-color: #ff9f43; 
+    color: #ff9f43; 
+}
+
+/* Активний режим */
+.active[data-mode="kids"] {
+    background: #fff2cc; /* Ніжно-жовтий фон, як сонечко */
+    color: #333; /* Темний текст, щоб було добре видно */
+    border-color: #ff9f43;
+    box-shadow: 0 0 15px #ff9f43;
+}
+
+/* Зробимо текст для дітей більшим */
+.active[data-mode="kids"] .result-box {
+    font-size: 1.2em; /* Трохи більше */
+    font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif; /* Грайливий шрифт */
+}
         /* Стилі активних кнопок */
         .active[data-mode="common"] { background: var(--success); color: #000; }
         .active[data-mode="politics"] { background: var(--warning); color: #000; }
@@ -189,7 +207,7 @@
             <button class="mode-btn" data-mode="gamer" onclick="switchMode('gamer')">🎮 ГЕЙМЕР</button>
             <button class="mode-btn" data-mode="folk" onclick="switchMode('folk')">🌿 ЕТНО-КОД</button>
             <button class="mode-btn" data-mode="hot" onclick="checkAge()"> В розробці</button>
-            
+            <button class="mode-btn" data-mode="kids" onclick="switchMode('kids')">🧸 ЗОО-САДОК</button>
         </div>
     </div>
 
@@ -604,6 +622,11 @@
     body.style.backgroundImage = "radial-gradient(circle, #0b3d20 0%, #000000 100%)"; // Магічне сяйво
     themeColor = "#2ecc71"; // Яскраво-зелений текст
 }
+            else if(mode === 'kids') { 
+    body.style.background = "#fff200"; // Яскравий жовтий
+    body.style.backgroundImage = "linear-gradient(120deg, #f6d365 0%, #fda085 100%)"; // "Персиковий" градієнт
+    themeColor = "#d35400"; 
+}
             //else if(mode === 'hot') { body.style.background = "#1a050d"; themeColor = "#ff006e"; }
 
             // Оновлюємо CSS змінну акценту динамічно для кнопок
@@ -732,5 +755,6 @@
     </script>
 </body>
 </html>
+
 
 
