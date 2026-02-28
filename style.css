@@ -1,0 +1,323 @@
+    :root {
+            --bg: #0f0f1b;
+            --card-bg: #16213e;
+            --accent: #e94560;
+            --text: #ffffff;
+            --success: #55efc4;
+            --warning: #f1c40f;
+            --hot: #ff006e;
+            --history: #d35400;
+            --profi: #3498db;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px;
+            margin: 0;
+            min-height: 100vh;
+            transition: background 0.5s ease;
+        }
+            /* Стилі для панелі налаштувань */
+.settings-panel {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.toggle-label {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem;
+    color: #a4b0be;
+}
+
+.toggle-label input[type="checkbox"] {
+    margin-right: 8px;
+    cursor: pointer;
+    width: 18px;
+    height: 18px;
+    accent-color: #ceac8d; /* Колір галочки (можна змінити під ваш дизайн) */
+}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script> 
+/* === ОФОРМЛЕННЯ ДЛЯ РЕЖИМУ "ОПОРА" 🌸 === */
+body.theme-women {
+    /* Глибокий заспокійливий градієнт фону */
+    background: linear-gradient(135deg, #2a1b2d 0%, #161224 100%);
+}
+
+/* Ніжне світіння і рамки для карток */
+body.theme-women .card {
+    border-color: #d291bc; /* Пильно-рожевий колір */
+    box-shadow: 0 5px 20px rgba(210, 145, 188, 0.15); /* М'яка тінь */
+}
+
+/* Теплі заголовки всередині карток */
+body.theme-women .label {
+    color: #fdbaf8; /* Світло-бузковий */
+}
+
+/* Кнопка "Генерувати" стає більш жіночною і теплою */
+body.theme-women .btn-main {
+    background: linear-gradient(45deg, #b565a7, #d291bc);
+    box-shadow: 0 4px 15px rgba(181, 101, 167, 0.4);
+    color: #fff;
+}
+
+/* Рамочка для підказки (Hint) */
+body.theme-women .hint-box {
+    border-left: 4px solid #fdbaf8;
+    background: rgba(210, 145, 188, 0.1);
+}
+/* Стилі для поля вводу власної ситуації */
+.custom-sit-container {
+    margin: 15px auto 20px auto;
+    max-width: 400px;
+    text-align: center;
+}
+
+#custom-sit-input {
+    width: 100%;
+    padding: 12px 20px;
+    border-radius: 25px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    background: rgba(0, 0, 0, 0.1); /* Напівпрозорий фон */
+    color: inherit; /* Бере колір тексту з вашої теми */
+    font-size: 1rem;
+    font-family: inherit;
+    outline: none;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+#custom-sit-input::placeholder {
+    color: #a4b0be; /* Спокійний колір підказки */
+    opacity: 0.7;
+}
+
+#custom-sit-input:focus {
+    border-color: #ff9f43; /* Колір при натисканні (можна змінити на свій) */
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 10px rgba(255, 159, 67, 0.3);
+}
+
+        h2 { text-transform: uppercase; letter-spacing: 2px; margin-top: 5px; text-align: center; margin-bottom: 15px;}
+
+        /* Навігація режимів */
+        .mode-wrapper {
+            width: 100%;
+            max-width: 500px;
+            margin-bottom: 15px;
+        }
+        
+        .mode-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .mode-btn {
+            flex: 1 1 30%; /* Щоб кнопки гарно ставали в ряд */
+            padding: 10px 5px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: var(--card-bg);
+            color: rgba(255,255,255,0.7);
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: bold;
+            transition: 0.3s;
+            white-space: nowrap;
+        }
+
+
+        .mode-btn.active {
+            color: white;
+            transform: scale(1.05);
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            border: none;
+        }
+        .mode-btn[data-mode="folk"] { 
+            border-color: #27ae60; 
+            color: #27ae60;}
+            /* Кнопка */
+.mode-btn[data-mode="kids"] { 
+    border-color: #ff9f43; 
+    color: #ff9f43; 
+}
+
+/* Активний режим */
+.active[data-mode="kids"] {
+    background: #fff2cc; /* Ніжно-жовтий фон, як сонечко */
+    color: #333; /* Темний текст, щоб було добре видно */
+    border-color: #ff9f43;
+    box-shadow: 0 0 15px #ff9f43;
+}
+
+/* Зробимо текст для дітей більшим */
+.active[data-mode="kids"] .result-box {
+    font-size: 1.2em; /* Трохи більше */
+    font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif; /* Грайливий шрифт */
+}
+        /* Стилі активних кнопок */
+        .active[data-mode="common"] { background: var(--success); color: #000; }
+        .active[data-mode="politics"] { background: var(--warning); color: #000; }
+        .active[data-mode="history"] { background: var(--history); }
+        .active[data-mode="profi"] { background: var(--profi); }
+        .active[data-mode="school"] { background: #0984e3; border-color: #74b9ff; } /* Яскравий синій */
+        .active[data-mode="meme"] { background: #39ff14; color: #000; border-color: #39ff14; box-shadow: 0 0 15px #39ff14; } /* Неоновий зелений */
+        .active[data-mode="potter"] { background: #740001; border-color: #D3A625; color: #D3A625; } /* Бордовий із золотим текстом */
+        .active[data-mode="fantasy"] { background: #10ac84; border-color: #10ac84; } /* Магічний зелений */
+        .active[data-mode="gamer"] { background: #8e44ad; border-color: #8e44ad; }
+        .active[data-mode="folk"] { background: #0b2d18; border-color: #2ecc71;    box-shadow: 0 0 15px #27ae60;}
+        .active[data-mode="hot"] { background: var(--hot); }
+        
+
+        /* Налаштування */
+        .settings-bar {
+            background: rgba(255,255,255,0.05);
+            padding: 10px 15px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 500px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            box-sizing: border-box;
+        }
+        .toggle-group { display: flex; gap: 15px; }
+        .checkbox-label { display: flex; align-items: center; gap: 5px; cursor: pointer; }
+        input[type="checkbox"] { accent-color: var(--accent); transform: scale(1.2); }
+
+        /* Сітка карток */
+        .game-container {
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 15px;
+            border-radius: 12px;
+            border-left: 5px solid var(--accent);
+            animation: fadeIn 0.5s;
+        }
+
+        .card.hidden { display: none; }
+        .label { font-size: 0.7rem; opacity: 0.6; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+        .content { font-size: 1.1rem; font-weight: 600; line-height: 1.4; }
+        
+        /* Підказка */
+        .hint-box {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            padding: 10px;
+            border-radius: 8px;
+            font-style: italic;
+            font-size: 0.9rem;
+            margin-top: 8px;
+            display: none;
+            border: 1px dashed rgba(255,255,255,0.3);
+        }
+
+        /* Таймер і кнопки */
+        .action-zone {
+            margin-top: 25px;
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        #timerDisplay { font-size: 3.5rem; font-weight: 800; margin: 10px 0; line-height: 1; color: white; }
+        #timerLabel { font-size: 0.9rem; color: var(--success); min-height: 20px; }
+
+        .btn-main {
+            width: 100%;
+            padding: 18px;
+            border-radius: 12px;
+            border: none;
+            background: var(--accent);
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(233, 69, 96, 0.4);
+            transition: transform 0.2s;
+        }
+        .btn-main:active { transform: scale(0.98); }
+        .btn-ready { background: var(--success); color: #0f0f1b; box-shadow: 0 4px 15px rgba(85, 239, 196, 0.4); }
+
+        /* Голосування */
+        .vote-panel { display: none; gap: 10px; margin-top: 15px; }
+        .vote-btn { flex: 1; padding: 15px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; color: white; font-size: 1rem; }
+        .vote-win { background: #27ae60; }
+        .vote-fail { background: #c0392b; }
+/* Стиль для кнопки відгуку */
+.feedback-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #a4b0be; /* Спокійний сірий або під колір вашої теми */
+    text-decoration: none;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+.feedback-btn:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+/* === СТИЛІ ДЛЯ ЗБЕРЕЖЕНОЇ КАРТИНКИ (ЕКСПОРТ) === */
+.export-style {
+    padding: 30px !important;
+    background: linear-gradient(135deg, #16213e 0%, #0f0f1b 100%) !important;
+    border: 3px solid #ff9f43 !important; /* Красива помаранчева рамочка */
+    border-radius: 20px !important;
+    box-shadow: none !important; /* Прибираємо зайві тіні для чіткості */
+}
+
+/* Робимо текст на картинці максимально яскравим і чітким */
+.export-style .content, 
+.export-style .hint-box {
+    color: #ffffff !important; 
+    font-weight: 600 !important;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8) !important; /* Додає контрасту літерам */
+    opacity: 1 !important;
+}
+
+/* Яскраві заголовки (Тригер, Ситуація тощо) */
+.export-style .label {
+    color: #ff9f43 !important;
+    font-weight: bold !important;
+    opacity: 1 !important;
+}
+
+/* Додаємо водяний знак / підпис знизу картинки */
+.export-style::after {
+    content: "Згенеровано у додатку «Альтер-Его»";
+    display: block;
+    text-align: center;
+    margin-top: 25px;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9rem;
+    font-style: italic;
+}    
